@@ -27,12 +27,11 @@ jobs:
           IMAGE_TAG=latest
           REPOSITORY=tws-ecommerce-app
           REGION=eu-north-1
-          ACCOUNT_ID=800261073875
 
           IMAGE_DIGEST=$(aws ecr describe-images \
             --repository-name $REPOSITORY \
             --region $REGION \
-            --query "imageDetails[?contains(imageTags, '$IMAGE_TAG')].imageDigest" \
+            --query "imageDetails[?imageTags && contains(imageTags, '$IMAGE_TAG')].imageDigest" \
             --output text)
 
           if [ -n "$IMAGE_DIGEST" ]; then
@@ -49,6 +48,7 @@ jobs:
         env:
           ECR_REGISTRY: 800261073875.dkr.ecr.eu-north-1.amazonaws.com
           ECR_REPOSITORY: tws-ecommerce-app
+
         run: |
           IMAGE_TAG=latest
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
