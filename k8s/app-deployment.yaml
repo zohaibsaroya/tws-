@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tws-ecommerce-app
+  namespace: easyshop  
+  labels:
+    app: tws-ecommerce-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tws-ecommerce-app
+  template:
+    metadata:
+      labels:
+        app: tws-ecommerce-app
+    spec:
+      containers:
+        - name: app
+          image: 800261073875.dkr.ecr.eu-north-1.amazonaws.com/tws-ecommerce-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://easyshop-mongodb:27017/easyshop"
+

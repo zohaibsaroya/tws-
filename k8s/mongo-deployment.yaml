@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easyshop-mongodb
+  namespace: easyshop  
+  labels:
+    app: easyshop-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: easyshop-mongodb
+  template:
+    metadata:
+      labels:
+        app: easyshop-mongodb
+    spec:
+      containers:
+        - name: mongo
+          image: 800261073875.dkr.ecr.eu-north-1.amazonaws.com/easyshop-mongodb:latest
+          ports:
+            - containerPort: 27017
+
