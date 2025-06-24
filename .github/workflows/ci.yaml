@@ -22,11 +22,20 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, and push image to ECR
+      - name: Build and Push App Image
         env:
           ECR_REGISTRY: 800261073875.dkr.ecr.eu-north-1.amazonaws.com
           ECR_REPOSITORY: tws-ecommerce-app
         run: |
           IMAGE_TAG=latest
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Build and Push MongoDB Image
+        env:
+          ECR_REGISTRY: 800261073875.dkr.ecr.eu-north-1.amazonaws.com
+          ECR_REPOSITORY: easyshop-mongodb
+        run: |
+          IMAGE_TAG=latest
+          docker build -f Dockerfile.mongodb -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
